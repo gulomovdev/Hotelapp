@@ -89,6 +89,7 @@ public class AdminService {
         }
     }
 
+
     private static void showHistory() {
         System.out.println("            Historys: ");
         System.out.println("===========================================================================");
@@ -184,7 +185,8 @@ public class AdminService {
             System.out.println("Enter balance: ");
             user.setBalance(intScanner.nextDouble());
             user.setRole(Role.USER);
-            user.setPassword(null);
+            System.out.println("Enter password: ");
+            user.setPassword(strScanner.nextLine());
             //Address
             Address address = new Address();
             System.out.println("Enter country: ");
@@ -196,6 +198,7 @@ public class AdminService {
             System.out.println("Enter home number: ");
             address.setHomeNumber(intScanner.nextInt());
             user.setAddress(address);
+            users.add(user);
             bookingMethod(user);
         }else{
             System.out.println("A user with this ID exists on the network😊...");
@@ -233,9 +236,14 @@ public class AdminService {
 
                 String dateOfReceipt = strScanner.nextLine();
                 LocalDate sana1 = LocalDate.parse(dateOfReceipt,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
                 System.out.println("Enter how long you will stay at the hotel: ");
                 String dateOfSubmission  = strScanner.nextLine();
                 LocalDate sana2  = LocalDate.parse(dateOfSubmission,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                if (!testDay(sana1,sana2)) {
+                    System.out.println("Enter the date using the header😡 ");
+                    return;
+                }
                 if (testBoookingMetho(sana1,sana2,id)) {
                     System.out.println("Sorry this house is busy these days😔 ");
                 }else{
@@ -277,9 +285,14 @@ public class AdminService {
 
                 String dateOfReceipt = strScanner.nextLine();
                 LocalDate sana1 = LocalDate.parse(dateOfReceipt,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
                 System.out.println("Enter how long you will stay at the hotel: ");
                 String dateOfSubmission  = strScanner.nextLine();
                 LocalDate sana2  = LocalDate.parse(dateOfSubmission,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                if (!testDay(sana1,sana2)) {
+                    System.out.println("Enter the date using the header😡 ");
+                    return;
+                }
                 Booking booking = new Booking();
                 booking.setUser(user);
                 booking.setRoom(rooms.stream().filter(r->r.getID().equals(id)).findAny().orElse(null));
@@ -291,6 +304,7 @@ public class AdminService {
 
                     booking.setBookingState(BookingState.RESERVED);
                     bookings.add(booking);
+
 
                     System.out.println("The room has been booked🫡...");
                     user.setBalance(user.getBalance()-(turganKunSoni*booking.getRoom().getPrice()));
@@ -318,7 +332,13 @@ public class AdminService {
     }
 
     private static boolean testBoookingMetho(LocalDate sana1, LocalDate sana2,String id) {
-        for (int i = 0; i <bookings.size() ; i++) {
+
+      return  bookings
+                .stream()
+                .filter(b-> b.getRoom().getID().equals(id))
+                .filter(booking->booking.getBookingState()!=BookingState.AVAILABLE)
+                .anyMatch(booking->!(sana2.isBefore(booking.getDateOfReceipt()) || sana1.isAfter(booking.getDateOfSubmission())));
+  /*      for (int i = 0; i <bookings.size() ; i++) {
             if(Objects.equals(bookings.get(i).getRoom().getID(),id) ){
                 Booking booking = bookings.get(i);
                 if(!(sana2.isBefore(booking.getDateOfReceipt()) || sana1.isAfter(booking.getDateOfSubmission()))) {
@@ -328,7 +348,7 @@ public class AdminService {
                 }
             }
         }
-        return false;
+        return false; */
     }
 
 
@@ -394,5 +414,16 @@ public class AdminService {
                 System.out.println("Input error😒...");
             }
         }
+    }
+
+    private static boolean testDay(LocalDate data,LocalDate date2){
+        LocalDate today = LocalDate.now();
+        if(data.isAfter(today)){
+            if(date2.isAfter(data)){
+                return true;
+            }
+
+        }
+        return false;
     }
 }

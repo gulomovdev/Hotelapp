@@ -84,6 +84,7 @@ public class UserService {
         }
     }
 
+
     private static void bookingHistory() {
         System.out.println("            User Historys: ");
         System.out.println("===========================================================================");
@@ -92,6 +93,7 @@ public class UserService {
                 .forEach(System.out::println) ;
         System.out.println("===========================================================================");
     }
+
 
     private static void cancelBooking() {
 
@@ -115,8 +117,6 @@ public class UserService {
 
 
     }
-
-
 
 
     private static void bookingRoomU() {
@@ -147,6 +147,10 @@ public class UserService {
                 System.out.println("Enter how long you will stay at the hotel: ");
                 String dateOfSubmission  = strScanner.nextLine();
                 LocalDate sana2  = LocalDate.parse(dateOfSubmission,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                if (!testDay(sana1,sana2)) {
+                    System.out.println("Enter the date using the header😡 ");
+                    return;
+                }
                 if (testBoookingMetho(sana1,sana2,id)) {
                     System.out.println("Sorry this house is busy these days😔 ");
                 }else{
@@ -185,9 +189,14 @@ public class UserService {
 
                 String dateOfReceipt = strScanner.nextLine();
                 LocalDate sana1 = LocalDate.parse(dateOfReceipt,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
                 System.out.println("Enter how long you will stay at the hotel: ");
                 String dateOfSubmission  = strScanner.nextLine();
                 LocalDate sana2  = LocalDate.parse(dateOfSubmission,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                if (!testDay(sana1,sana2)) {
+                    System.out.println("Enter the date using the header😡 ");
+                    return;
+                }
                 Booking booking = new Booking();
                 booking.setUser(currentUser);
                 booking.setRoom(rooms.stream().filter(r->r.getID().equals(id)).findAny().orElse(null));
@@ -247,5 +256,16 @@ public class UserService {
                 .stream()
                 .forEach(System.out::println) ;
         System.out.println("===========================================================================");
+    }
+
+    private static boolean testDay(LocalDate data,LocalDate date2){
+        LocalDate today = LocalDate.now();
+        if(data.isAfter(today)){
+            if(date2.isAfter(data)){
+                return true;
+            }
+
+        }
+        return false;
     }
 }

@@ -30,24 +30,28 @@ public class DataSource {
     public static   ArrayList <History> histories = new ArrayList<>();
     public static ArrayList<User> users = new ArrayList<>();
 
-    public static Room room = new Room(UUID.randomUUID().toString(),1,2, RoomType.STANDARD,150.0);
+     public static Room room = new Room(UUID.randomUUID().toString(),1,2, RoomType.LUXURY,150.0);
+     public static Room room1 = new Room(UUID.randomUUID().toString(),1,1, RoomType.STANDARD,50.0);
+     public static Room room2 = new Room(UUID.randomUUID().toString(),1,3, RoomType.BUSINESS,100.0);
+
    public static Address address = new Address("UZB","Andijan","Buloqboshi",231);
    public static Address address1 = new Address("UZB","a","a",231);
    public static Address address2 = new Address("UZB","b","b",231);
    public static Address address3 = new Address("UZB","c","c",231);
 
    public static  User userAdmin = new User("AD123","Navruz","Gulomov",address,100000.0, Role.ADMIN,"1111");
-   public static  User user1  = new User("a","a","a",address1,50.0, Role.USER,"a");
-   public static  User user2  = new User("b","b","b",address2,200.0, Role.USER,"b");
-   public static  User user3  = new User("c","c","c",address3,150000.0, Role.USER,"c");
+   public static  User user1  = new User("a","a","a",address1,120.0, Role.USER,"a");
+   public static  User user2  = new User("b","b","b",address2,20000.0, Role.USER,"b");
+   public static  User user3  = new User("c","c","c",address3,15000.0, Role.USER,"c");
   static{
       users.add(userAdmin);
       users.add(user1);
       users.add(user2);
       users.add(user3);
       rooms.add(room);
+      rooms.add(room1);
+      rooms.add(room2);
   }
-
 
 
     public static void refreshScanner(){

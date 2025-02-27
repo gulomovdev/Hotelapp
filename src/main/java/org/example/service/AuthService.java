@@ -111,6 +111,9 @@ public class AuthService {
             user.setAddress(address);
             users.add(user);
             System.out.println("You have successfully registered😊...");
+
+
+
         }
 
         //Test
